@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MorseLock2020</string>
+    <string name="disabled">Disabled</string>
 </resources>
