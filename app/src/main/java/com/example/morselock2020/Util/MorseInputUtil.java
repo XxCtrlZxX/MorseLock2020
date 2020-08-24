@@ -44,6 +44,8 @@ public class MorseInputUtil {
                         //morse.append("-");
                         appendDash(mainBinding);
                         isCanAppend = false;
+                        isBtnDown = false;
+                        break;
                     }
 
                 } catch (Exception e) {
@@ -58,6 +60,7 @@ public class MorseInputUtil {
         TimerStart();
         isBtnDown = true;
         isCanAppend = true;
+        pressTime = 0;
         //mainBinding.morseInputTxt.setText("안녕");
     }
 
