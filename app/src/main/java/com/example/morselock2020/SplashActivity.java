@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.example.morselock2020.Util.SaveSharedPreference;
 
@@ -28,6 +29,9 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             } else {
                 // TODO: 잠금화면으로 이동
+                Toast.makeText(this, "잠금화면으로 이동해야 함.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
             }
 
         }, 1500);

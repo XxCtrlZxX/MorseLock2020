@@ -8,7 +8,6 @@ public class MorseInputUtil {
 
     private boolean isBtnDown, isSensitivity, isCanAppend;
     private float pressTime, sensitivity;
-    private String morse = "";
 
     //-------- Constructors ---------//
     public MorseInputUtil(ActivityMainBinding binding) {
@@ -39,13 +38,15 @@ public class MorseInputUtil {
                     Thread.sleep(5);
                     pressTime += 0.005;
 
-                    //TODO: 너무 길게 누르면 에러남
-                    if (isSensitivity && pressTime >= sensitivity) {
-                        //morse.append("-");
-                        appendDash(mainBinding);
-                        isCanAppend = false;
-                        isBtnDown = false;
-                        break;
+                    if (isSensitivity) {    // 감도 설정 됨
+                        if (pressTime >= sensitivity) {
+                            appendDash(mainBinding);
+                            isCanAppend = false;
+                            isBtnDown = false;
+                            break;
+                        }
+                    } else {    // 감도 설정 안 됨
+
                     }
 
                 } catch (Exception e) {
@@ -61,13 +62,11 @@ public class MorseInputUtil {
         isBtnDown = true;
         isCanAppend = true;
         pressTime = 0;
-        //mainBinding.morseInputTxt.setText("안녕");
     }
 
     public void OnMorseBtnUp() {
         isBtnDown = false;
         if (isCanAppend) {
-            //morse.append("·");
             appendDot(mainBinding);
         }
     }

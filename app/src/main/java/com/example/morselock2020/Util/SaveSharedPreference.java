@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 public class SaveSharedPreference {
     static final String PREF_FIRST = "first";
     static final String PREF_MORSE = "morse_code";
+    static final String PREF_PW = "pw";
     static final String PREF_TIME = "press_time";
 
     static SharedPreferences getSharedPreferences(Context context) {
@@ -23,6 +24,12 @@ public class SaveSharedPreference {
     public static void setMorseCode(Context context, final String morse) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(PREF_MORSE, morse);
+        editor.apply();
+    }
+
+    public static void setPW(Context context, final String pw) {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(PREF_PW, pw);
         editor.apply();
     }
 

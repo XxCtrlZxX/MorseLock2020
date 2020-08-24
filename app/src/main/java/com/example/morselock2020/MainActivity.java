@@ -3,6 +3,7 @@ package com.example.morselock2020;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
         binding.setSensitivity(sensitivity);
         binding.setIsValid(false);
         binding.setIsCanReset(false);
+        binding.setMorse("");
 
         binding.morseInputTxt.setClickable(false);
         binding.morseInputTxt.setFocusable(false);  // EditText 비활성화
-
+        binding.morseInputTxt.setText("");
 
         // InputButton
         CreateInstance();
@@ -46,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         // SettingButton
-        binding.settingBtn.setOnClickListener(v -> Toast.makeText(this, "설정 화면으로 넘어갑니다.", Toast.LENGTH_SHORT).show());
+        binding.settingBtn.setOnClickListener(v -> {
+            String morse = binding.getMorse();
+            Toast.makeText(this, "설정 화면으로 넘어갑니다. " + morse, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+            intent.putExtra("morse", morse);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);  // 화면 전환 애니메이션 -> 오른쪽
+            finish();
+        });
 
 
         // TextChangeListener
@@ -58,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int len = binding.morseInputTxt.getText().length();
+                int len = s.toString().length();
                 if (len >= 4)
                     binding.setIsValid(true);
                 if (len > 0)
