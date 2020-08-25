@@ -48,12 +48,16 @@ public class SaveSharedPreference {
         return getSharedPreferences(context).getString(PREF_MORSE, "");
     }
 
+    public static String getPrefPW(Context context) {
+        return getSharedPreferences(context).getString(PREF_PW, "");
+    }
+
     public static float getPrefTime(Context context) {
         return getSharedPreferences(context).getFloat(PREF_TIME, 0);
     }
 
     // 모든 정보 삭제
-    public static void Clear(Context context) {
+    public static void ClearAll(Context context) {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.clear();
         editor.apply();
