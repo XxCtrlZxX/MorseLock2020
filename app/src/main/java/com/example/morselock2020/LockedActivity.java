@@ -57,7 +57,6 @@ public class LockedActivity extends AppCompatActivity {
         // ForgotText
         binding.forgotTxt.setOnClickListener(v -> {
             EditText editText = new EditText(LockedActivity.this);
-            editText.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Warning").setMessage("보조 비밀번호를 입력하세요.\n주의: 등록해놓은 정보가 삭제됩니다.");

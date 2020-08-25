@@ -20,6 +20,10 @@
         <variable
             name="isCanReset"
             type="Boolean" />
+
+        <variable
+            name="isLocked"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,6 +77,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView1"
             app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+        <Switch
+            android:id="@+id/unLockSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="UnLocked"
+            app:layout_constraintBottom_toTopOf="@+id/timeSeekBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <EditText
             android:id="@+id/morseInputTxt"
@@ -148,8 +162,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/stroke_button"
-            android:text="Splash"
+            android:text="SPLASH : Please Touch Me"
+            android:textAllCaps="false"
             android:textColor="@color/colorAccent"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

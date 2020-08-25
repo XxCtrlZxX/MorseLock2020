@@ -1,5 +1,6 @@
 package com.example.morselock2020;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -9,6 +10,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MorseInputUtil morseInputUtil;
     private float sensitivity;
+    private String recoveryPW;
+    private boolean isLocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         sensitivity = SaveSharedPreference.getPrefTime(this);
+        recoveryPW = SaveSharedPreference.getPrefPW(this);
         binding.setSensitivity(sensitivity);
         binding.setIsValid(false);
         binding.setIsCanReset(false);
@@ -36,6 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
         binding.morseInputTxt.setClickable(false);
         binding.morseInputTxt.setFocusable(false);  // EditText
+
+        if (SaveSharedPreference.getPrefMorse(this).length() > 0) {
+            isLocked = true;
+            binding.unLockSwitch.setText("Locked");
+            binding.unLockSwitch.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
+        else {
+            isLocked = false;
+            binding.unLockSwitch.setText("UnLocked");
+            binding.unLockSwitch.setTextColor(getResources().getColor(R.color.materialDarkBlack));
+        }
 
         if (getIntent().getBooleanExtra("isUnLock", false)) {
             binding.morseInputTxt.setText("---------");
@@ -60,20 +77,51 @@ public class MainActivity extends AppCompatActivity {
         binding.morseInputBtn.setOnTouchListener(onButtonTouchListener);
 
 
+        // UnLockSwitch
+        binding.unLockSwitch.setChecked(isLocked);
+        binding.unLockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (binding.getIsValid())
+                        GotoPasswordActivity();
+                    else {
+                        binding.unLockSwitch.setChecked(false);
+                        Toast.makeText(MainActivity.this, "네 글지 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    EditText editText = new EditText(MainActivity.this);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("보조 비밀번호 입력");
+                    builder.setView(editText);
+                    builder.setPositiveButton("확인", (dialog, which) -> {
+                        if (recoveryPW.equals(editText.getText().toString())) {
+
+                            SaveSharedPreference.setMorseCode(MainActivity.this, "");
+                            SaveSharedPreference.setPW(MainActivity.this, "");
+                            Toast.makeText(MainActivity.this, "모스부호와 비밀번호가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            binding.unLockSwitch.setText("UnLocked");
+                            binding.unLockSwitch.setTextColor(getResources().getColor(R.color.materialDarkBlack));
+
+                        } else {
+                            binding.unLockSwitch.setChecked(true);
+                            Toast.makeText(MainActivity.this, "다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton("취소", ((dialog, which) -> binding.unLockSwitch.setChecked(true)));
+                    builder.show();
+                }
+            }
+        });
+
+
         // ResetButton
         binding.resetBtn.setOnClickListener(v -> binding.morseInputTxt.setText(""));
 
 
         // SettingButton
-        binding.settingBtn.setOnClickListener(v -> {
-            String morse = binding.getMorse();
-            //Toast.makeText(this, "설정 화면으로 넘어갑니다. " + morse, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
-            intent.putExtra("morse", morse);
-            startActivity(intent);
-            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);  // 화면 전환 애니메이션 -> 오른쪽
-            finish();
-        });
+        binding.settingBtn.setOnClickListener(v -> GotoPasswordActivity());
 
 
         // TextChangeListener
@@ -126,6 +174,15 @@ public class MainActivity extends AppCompatActivity {
                 SaveSharedPreference.setPressTime(MainActivity.this, sensitivity);
             }
         });
+    }
+
+    private void GotoPasswordActivity() {
+        String morse = binding.getMorse();
+        Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
+        intent.putExtra("morse", morse);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);  // 화면 전환 애니메이션 -> 오른쪽
+        finish();
     }
 
     private void CreateInstance() {
