@@ -1,22 +1,40 @@
 package com.example.morselock2020.Util;
 
+import com.example.morselock2020.databinding.ActivityLockedBinding;
 import com.example.morselock2020.databinding.ActivityMainBinding;
 
 public class MorseInputUtil {
+    enum CurrentBinding { main, locked }
+
+    private CurrentBinding currentBinding;
 
     private ActivityMainBinding mainBinding;
+    private ActivityLockedBinding lockedBinding;
 
     private boolean isBtnDown, isSensitivity, isCanAppend;
     private float pressTime, sensitivity;
 
     //-------- Constructors ---------//
     public MorseInputUtil(ActivityMainBinding binding) {
+        currentBinding = CurrentBinding.main;
         mainBinding = binding;
         isBtnDown = false;
         isSensitivity = false;
         pressTime = 0;
     }
     public MorseInputUtil(ActivityMainBinding binding, float time) {
+        this(binding);
+        isSensitivity = true;
+        sensitivity = time;
+    }
+    public MorseInputUtil(ActivityLockedBinding binding) {
+        currentBinding = CurrentBinding.locked;
+        lockedBinding = binding;
+        isBtnDown = false;
+        isSensitivity = false;
+        pressTime = 0;
+    }
+    public MorseInputUtil(ActivityLockedBinding binding, float time) {
         this(binding);
         isSensitivity = true;
         sensitivity = time;
@@ -40,9 +58,10 @@ public class MorseInputUtil {
 
                     if (isSensitivity) {    // 감도 설정 됨
                         if (pressTime >= sensitivity) {
-                            appendDash(mainBinding);
+                            appendText("-");
                             isCanAppend = false;
                             isBtnDown = false;
+                            pressTime = 0;
                             break;
                         }
                     } else {    // 감도 설정 안 됨
@@ -67,16 +86,19 @@ public class MorseInputUtil {
     public void OnMorseBtnUp() {
         isBtnDown = false;
         if (isCanAppend) {
-            appendDot(mainBinding);
+            appendText("·");
         }
     }
 
-    //-------- setText function ----------//
-    private void appendDot(ActivityMainBinding binding) {
-        binding.morseInputTxt.append("·");
-    }
-
-    private void appendDash(ActivityMainBinding binding) {
-        binding.morseInputTxt.append("-");
+    //-------- appendText function ----------//
+    private void appendText(final String code) {
+        switch (currentBinding) {
+            case main:
+                mainBinding.morseInputTxt.append(code);
+                break;
+            case locked:
+                lockedBinding.morseInputTxt.append(code);
+                break;
+        }
     }
 }

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        sensitivity = SaveSharedPreference.getPrefTime(MainActivity.this);
+        sensitivity = SaveSharedPreference.getPrefTime(this);
         binding.setSensitivity(sensitivity);
         binding.setIsValid(false);
         binding.setIsCanReset(false);
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.morseInputTxt.setClickable(false);
         binding.morseInputTxt.setFocusable(false);  // EditText 비활성화
-        binding.morseInputTxt.setText("");
 
         // InputButton
         CreateInstance();
@@ -87,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // SeekBar
-        binding.timeSeekBar.setProgress((int)(sensitivity * 500));
+        binding.timeSeekBar.setProgress((int)(sensitivity * 100));
         binding.timeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sensitivity = (float)progress / 500;
+                sensitivity = (float)progress / 100;
                 if (sensitivity > 0)
                     binding.timeTxt.setText(String.format("%.2f", sensitivity) + "s");
                 else

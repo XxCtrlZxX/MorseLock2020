@@ -28,9 +28,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
             } else {
-                // TODO: 잠금화면으로 이동
-                Toast.makeText(this, "잠금화면으로 이동해야 함.", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LockedActivity.class));
                 finish();
             }
 
