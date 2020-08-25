@@ -37,12 +37,12 @@ public class PasswordActivity extends AppCompatActivity {
 
         // NextButton
         binding.nextBtn.setOnClickListener(v -> {
-            Toast.makeText(this, binding.getMorse() + ", " + binding.getPassword() + " 저장되었습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, binding.getMorse() + ", " + binding.getPassword() + " 설정되었습니다.", Toast.LENGTH_SHORT).show();
 
             SaveSharedPreference.setMorseCode(this, binding.getMorse());
             SaveSharedPreference.setPW(this, binding.getPassword());
 
-            startActivity(new Intent(PasswordActivity.this, SplashActivity.class));
+            startActivity(new Intent(PasswordActivity.this, MainActivity.class));
             finish();
         });
 

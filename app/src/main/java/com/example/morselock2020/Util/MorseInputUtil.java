@@ -62,7 +62,6 @@ public class MorseInputUtil {
                             isCanAppend = false;
                             isBtnDown = false;
                             pressTime = 0;
-                            break;
                         }
                     } else {    // 감도 설정 안 됨
 

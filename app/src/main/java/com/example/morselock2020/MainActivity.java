@@ -35,7 +35,25 @@ public class MainActivity extends AppCompatActivity {
         binding.setMorse("");
 
         binding.morseInputTxt.setClickable(false);
-        binding.morseInputTxt.setFocusable(false);  // EditText 비활성화
+        binding.morseInputTxt.setFocusable(false);  // EditText
+
+        if (getIntent().getBooleanExtra("isUnLock", false)) {
+            binding.morseInputTxt.setText("---------");
+            binding.morseInputTxt.setText("");
+            binding.splashBtn.setVisibility(View.GONE);
+        }
+
+        // SplashButton
+        binding.splashBtn.setOnClickListener(v -> {
+            if (SaveSharedPreference.getPrefMorse(this).length() <= 0) {
+                binding.morseInputTxt.setText("---------");
+                binding.morseInputTxt.setText("");
+                binding.splashBtn.setVisibility(View.GONE);
+            } else {
+                startActivity(new Intent(MainActivity.this, LockedActivity.class));
+                finish();
+            }
+        });
 
         // InputButton
         CreateInstance();
@@ -49,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // SettingButton
         binding.settingBtn.setOnClickListener(v -> {
             String morse = binding.getMorse();
-            Toast.makeText(this, "설정 화면으로 넘어갑니다. " + morse, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "설정 화면으로 넘어갑니다. " + morse, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
             intent.putExtra("morse", morse);
             startActivity(intent);

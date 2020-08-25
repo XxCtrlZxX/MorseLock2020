@@ -5,6 +5,10 @@
 
     <data>
         <variable
+            name="input"
+            type="String" />
+
+        <variable
             name="unlock"
             type="Boolean" />
     </data>
@@ -34,6 +38,7 @@
             android:background="@drawable/round_box"
             android:backgroundTint="@color/materialGray1"
             android:hint="MorseCode"
+            android:text="@={input}"
             android:textAlignment="center"
             android:inputType="text"
             android:padding="8dp"
@@ -63,11 +68,21 @@
             android:id="@+id/forgotTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="64dp"
+            android:layout_marginBottom="32dp"
             android:text="모스부호를 잊으셨나요?"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/lockImg"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/morselock" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
